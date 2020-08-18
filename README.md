@@ -19,12 +19,14 @@ pub const Codepoints = union(enum) {
     Single: u32,
     Double: [2]u32,
 };
+
+pub const Error = error{OutOfMemory};
 ```
 
 There are two functions exposed:
 
 ```zig
-pub fn entities(allocator: *std.mem.Allocator) !std.StringHashMap(Entity)
+pub fn entities(allocator: *std.mem.Allocator) Error!std.StringHashMap(Entity)
 pub fn freeEntities(allocator: *std.mem.Allocator, map: *std.StringHashMap(Entity)) void
 ```
 

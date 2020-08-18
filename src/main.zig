@@ -12,14 +12,20 @@ pub const Codepoints = union(enum) {
     Double: [2]u32,
 };
 
+pub const Error = error{OutOfMemory};
+
 // Ideally this would happen at comptime, but JSON parsing at
 // comptime is not a thing (yet?).
-pub fn entities(allocator: *std.mem.Allocator) !std.StringHashMap(Entity) {
+pub fn entities(allocator: *std.mem.Allocator) Error!std.StringHashMap(Entity) {
     var p = std.json.Parser.init(allocator, false);
     defer p.deinit();
 
     const json = @embedFile("../entities.json");
-    var tree = try p.parse(json);
+    var tree = p.parse(json) catch |err| switch (err) {
+        error.OutOfMemory => return error.OutOfMemory,
+        // This should never fail otherwise.
+        else => @panic("bundled entities.json did not parse"),
+    };
     defer tree.deinit();
 
     var map = std.StringHashMap(Entity).init(allocator);

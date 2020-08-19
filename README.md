@@ -19,8 +19,6 @@ pub const Codepoints = union(enum) {
     Single: u32,
     Double: [2]u32,
 };
-
-pub const Error = error{OutOfMemory};
 ```
 
 The list of entities is directly exposed, as well as a binary search function:
@@ -58,13 +56,16 @@ eacute: Entity{ .entity = &eacute;, .codepoints = Codepoints{ .Single = 233 }, .
 
 ## Help wanted
 
-Ideally this would be done at comptime.  The JSON tokeniser uses ~80GB of RAM
-and millions of backtracks to handle the whole `entities.json` at comptime, so
-not happening yet.  Maybe once we get a comptime allocator and we can use the
-regular parser.
+Ideally we'd do the JSON parsing and struct creation at comptime.  The std JSON
+tokeniser uses ~80GB of RAM and millions of backtracks to handle the whole
+`entities.json` at comptime, so it's not gonna happen yet.  Maybe once we get a
+comptime allocator we can use the regular parser.
 
-As it is, we do codegen.  Ideally we'de piece together an AST and render that
-instead of just writing Zig directly -- I did try it, but it's hard to do since
-`std.zig.render` expects all tokens to be available in the originally parsed
-source.  At the moment we parse our generated source and format it so we can at
-least validate it syntactically in the build step.
+As it is, we do codegen.  Ideally we'd piece together an AST and render that
+instead of just writing Zig directly -- I did try it with a 'template' input
+string (see some broken wip at
+[`63b9393`](https://github.com/kivikakk/htmlentities.zig/commit/63b9393)), but
+it's hard to do since `std.zig.render` expects all tokens, including string
+literal, to be available in the originally parsed source.  At the moment we
+parse our generated source and format it so we can at least validate it
+syntactically in the build step.

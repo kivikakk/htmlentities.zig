@@ -1,5 +1,4 @@
 const std = @import("std");
-const assert = std.debug.assert;
 const testing = std.testing;
 
 pub const Entity = struct {

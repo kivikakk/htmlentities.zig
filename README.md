@@ -1,5 +1,7 @@
 # htmlentities.zig
 
+![Build Status](https://action-badges.now.sh/kivikakk/htmlentities.zig)
+
 The bundled [`entities.json`](/entities.json) is sourced from <https://www.w3.org/TR/html5/entities.json>.
 
 Modelled on [Philip Jackson's `entities` crate](https://github.com/p-jackson/entities) for Rust.

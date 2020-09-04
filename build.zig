@@ -19,6 +19,10 @@ pub fn build(b: *std.build.Builder) !void {
 
 const embedded_json = @embedFile("entities.json");
 
+fn strLessThan(_: void, lhs: []const u8, rhs: []const u8) bool {
+    return std.mem.lessThan(u8, lhs, rhs);
+}
+
 fn generateEntities() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
@@ -31,19 +35,21 @@ fn generateEntities() !void {
 
     try writer.writeAll("pub const ENTITIES = [_]@import(\"main.zig\").Entity{\n");
 
-    var entries = tree.root.Object.items();
-    var maybe_prev: ?[]const u8 = null;
-    for (entries) |entry, i| {
-        if (maybe_prev) |prev| {
-            // We rely on lexicographical sort for binary search.
-            assert(std.mem.lessThan(u8, prev, entry.key));
-        }
-        maybe_prev = entry.key;
+    var keys = try std.ArrayList([]const u8).initCapacity(&arena.allocator, tree.root.Object.count());
+    var entries_it = tree.root.Object.iterator();
+    while (entries_it.next()) |entry| {
+        try keys.append(entry.key);
+    }
+
+    std.sort.insertionSort([]const u8, keys.items, {}, strLessThan);
+
+    for (keys.items) |key| {
+        var value = tree.root.Object.get(key).?.Object;
         try writer.writeAll(".{ .entity = ");
-        try zig.renderStringLiteral(entry.key, writer);
+        try zig.renderStringLiteral(key, writer);
         try writer.writeAll(", .codepoints = ");
 
-        var codepoints_array = entry.value.Object.get("codepoints").?.Array;
+        var codepoints_array = value.get("codepoints").?.Array;
         if (codepoints_array.items.len == 1) {
             try std.fmt.format(writer, ".{{ .Single = {} }}, ", .{codepoints_array.items[0].Integer});
         } else {
@@ -51,7 +57,7 @@ fn generateEntities() !void {
         }
 
         try writer.writeAll(".characters = ");
-        try zig.renderStringLiteral(entry.value.Object.get("characters").?.String, writer);
+        try zig.renderStringLiteral(value.get("characters").?.String, writer);
         try writer.writeAll(" },\n");
     }
 

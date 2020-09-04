@@ -38,7 +38,7 @@ fn generateEntities() !void {
     var keys = try std.ArrayList([]const u8).initCapacity(&arena.allocator, tree.root.Object.count());
     var entries_it = tree.root.Object.iterator();
     while (entries_it.next()) |entry| {
-        try keys.append(entry.key);
+        keys.appendAssumeCapacity(entry.key);
     }
 
     std.sort.insertionSort([]const u8, keys.items, {}, strLessThan);

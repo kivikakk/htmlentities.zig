@@ -45,9 +45,7 @@ fn generateEntities() !void {
 
     for (keys.items) |key| {
         var value = tree.root.Object.get(key).?.Object;
-        try writer.writeAll(".{ .entity = ");
-        try zig.renderStringLiteral(key, writer);
-        try writer.writeAll(", .codepoints = ");
+        try std.fmt.format(writer, ".{{ .entity = \"{Z}\", .codepoints = ", .{key});
 
         var codepoints_array = value.get("codepoints").?.Array;
         if (codepoints_array.items.len == 1) {
@@ -56,9 +54,7 @@ fn generateEntities() !void {
             try std.fmt.format(writer, ".{{ .Double = [2]u32{{ {}, {} }} }}, ", .{ codepoints_array.items[0].Integer, codepoints_array.items[1].Integer });
         }
 
-        try writer.writeAll(".characters = ");
-        try zig.renderStringLiteral(value.get("characters").?.String, writer);
-        try writer.writeAll(" },\n");
+        try std.fmt.format(writer, ".characters = \"{Z}\" }},\n", .{value.get("characters").?.String});
     }
 
     try writer.writeAll("};\n");

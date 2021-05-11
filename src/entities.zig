@@ -687,7 +687,7 @@ pub const ENTITIES = [_]@import("main.zig").Entity{
     .{ .entity = "&apacir;", .codepoints = .{ .Single = 10863 }, .characters = "\xe2\xa9\xaf" },
     .{ .entity = "&ape;", .codepoints = .{ .Single = 8778 }, .characters = "\xe2\x89\x8a" },
     .{ .entity = "&apid;", .codepoints = .{ .Single = 8779 }, .characters = "\xe2\x89\x8b" },
-    .{ .entity = "&apos;", .codepoints = .{ .Single = 39 }, .characters = "\'" },
+    .{ .entity = "&apos;", .codepoints = .{ .Single = 39 }, .characters = "'" },
     .{ .entity = "&approx;", .codepoints = .{ .Single = 8776 }, .characters = "\xe2\x89\x88" },
     .{ .entity = "&approxeq;", .codepoints = .{ .Single = 8778 }, .characters = "\xe2\x89\x8a" },
     .{ .entity = "&aring", .codepoints = .{ .Single = 229 }, .characters = "\xc3\xa5" },

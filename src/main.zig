@@ -32,20 +32,20 @@ pub fn lookup(entity: []const u8) ?Entity {
 }
 
 test "entities" {
-    testing.expectEqual(@as(usize, 2231), ENTITIES.len);
+    try testing.expectEqual(@as(usize, 2231), ENTITIES.len);
 
     var aelig = lookup("&AElig").?;
-    testing.expectEqualStrings("&AElig", aelig.entity);
-    testing.expectEqual(Codepoints{ .Single = 198 }, aelig.codepoints);
-    testing.expectEqualStrings("Æ", aelig.characters);
+    try testing.expectEqualStrings("&AElig", aelig.entity);
+    try testing.expectEqual(Codepoints{ .Single = 198 }, aelig.codepoints);
+    try testing.expectEqualStrings("Æ", aelig.characters);
 
     var afr = lookup("&Afr;").?;
-    testing.expectEqualStrings("&Afr;", afr.entity);
-    testing.expectEqual(Codepoints{ .Single = 120068 }, afr.codepoints);
-    testing.expectEqualStrings("𝔄", afr.characters);
+    try testing.expectEqualStrings("&Afr;", afr.entity);
+    try testing.expectEqual(Codepoints{ .Single = 120068 }, afr.codepoints);
+    try testing.expectEqualStrings("𝔄", afr.characters);
 
     var bnequiv = lookup("&bnequiv;").?;
-    testing.expectEqualStrings("&bnequiv;", bnequiv.entity);
-    testing.expectEqual(Codepoints{ .Double = [2]u32{ 8801, 8421 } }, bnequiv.codepoints);
-    testing.expectEqualStrings("\u{2261}\u{20E5}", bnequiv.characters);
+    try testing.expectEqualStrings("&bnequiv;", bnequiv.entity);
+    try testing.expectEqual(Codepoints{ .Double = [2]u32{ 8801, 8421 } }, bnequiv.codepoints);
+    try testing.expectEqualStrings("\u{2261}\u{20E5}", bnequiv.characters);
 }

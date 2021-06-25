@@ -14,7 +14,7 @@ pub const Codepoints = union(enum) {
 
 pub const ENTITIES = @import("entities.zig").ENTITIES;
 
-fn order(context: void, lhs: Entity, rhs: Entity) std.math.Order {
+fn order(_: void, lhs: Entity, rhs: Entity) std.math.Order {
     return std.mem.order(u8, lhs.entity, rhs.entity);
 }
 

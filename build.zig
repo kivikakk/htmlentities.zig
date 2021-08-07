@@ -59,7 +59,9 @@ fn generateEntities() !void {
 
     try writer.writeAll("};\n");
 
-    var zig_tree = try zig.parse(&arena.allocator, buffer.items);
+    try buffer.append(0);
+
+    var zig_tree = try zig.parse(&arena.allocator, buffer.items[0 .. buffer.items.len - 1 :0]);
 
     var out_file = try std.fs.cwd().createFile("src/entities.zig", .{});
     const formatted = try zig_tree.render(&arena.allocator);

@@ -27,15 +27,17 @@ fn generateEntities() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
 
-    var json_parser = std.json.Parser.init(&arena.allocator, false);
+    var allocator = arena.allocator();
+
+    var json_parser = std.json.Parser.init(allocator, false);
     var tree = try json_parser.parse(embedded_json);
 
-    var buffer = std.ArrayList(u8).init(&arena.allocator);
+    var buffer = std.ArrayList(u8).init(allocator);
     var writer = buffer.writer();
 
     try writer.writeAll("pub const ENTITIES = [_]@import(\"main.zig\").Entity{\n");
 
-    var keys = try std.ArrayList([]const u8).initCapacity(&arena.allocator, tree.root.Object.count());
+    var keys = try std.ArrayList([]const u8).initCapacity(allocator, tree.root.Object.count());
     var entries_it = tree.root.Object.iterator();
     while (entries_it.next()) |entry| {
         keys.appendAssumeCapacity(entry.key_ptr.*);
@@ -61,10 +63,10 @@ fn generateEntities() !void {
 
     try buffer.append(0);
 
-    var zig_tree = try zig.parse(&arena.allocator, buffer.items[0 .. buffer.items.len - 1 :0]);
+    var zig_tree = try zig.parse(allocator, buffer.items[0 .. buffer.items.len - 1 :0]);
 
     var out_file = try std.fs.cwd().createFile("src/entities.zig", .{});
-    const formatted = try zig_tree.render(&arena.allocator);
+    const formatted = try zig_tree.render(allocator);
     try out_file.writer().writeAll(formatted);
     out_file.close();
 }

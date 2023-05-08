@@ -46,6 +46,9 @@ fn generateEntities() !void {
     std.sort.insertionSort([]const u8, keys.items, {}, strLessThan);
 
     for (keys.items) |key| {
+        if (key.len == 0) continue;
+        if (key[key.len - 1] != ';') continue;
+
         var value = tree.root.Object.get(key).?.Object;
         try std.fmt.format(writer, ".{{ .entity = \"{}\", .codepoints = ", .{zig.fmtEscapes(key)});
 

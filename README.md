@@ -1,4 +1,4 @@
-# htmlentities.zig
+# [htmlentities.zig](https://hrzn.ee/kivikakk/htmlentities.zig)
 
 ![Build status](https://github.com/kivikakk/htmlentities.zig/workflows/Zig/badge.svg)
 

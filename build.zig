@@ -2,7 +2,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const zig = std.zig;
 
-pub fn build(b: *std.build.Builder) !void {
+pub fn build(b: *std.Build) !void {
     try generateEntities();
 
     const target = b.standardTargetOptions(.{});
@@ -34,7 +34,7 @@ fn generateEntities() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
 
-    var allocator = arena.allocator();
+    const allocator = arena.allocator();
 
     var tree = try std.json.parseFromSlice(std.json.Value, allocator, embedded_json, .{});
 
@@ -55,7 +55,7 @@ fn generateEntities() !void {
         var value = tree.value.object.get(key).?.object;
         try std.fmt.format(writer, ".{{ .entity = \"{}\", .codepoints = ", .{zig.fmtEscapes(key)});
 
-        var codepoints_array = value.get("codepoints").?.array;
+        const codepoints_array = value.get("codepoints").?.array;
         if (codepoints_array.items.len == 1) {
             try std.fmt.format(writer, ".{{ .Single = {} }}, ", .{codepoints_array.items[0].integer});
         } else {

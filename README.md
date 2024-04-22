@@ -1,6 +1,6 @@
 # [htmlentities.zig](https://hrzn.ee/kivikakk/htmlentities.zig)
 
-![Build status](https://github.com/kivikakk/htmlentities.zig/workflows/Zig/badge.svg)
+![Build status](https://github.com/kivikakk/htmlentities.zig/workflows/build/badge.svg)
 
 The bundled [`entities.json`](/entities.json) is sourced from <https://www.w3.org/TR/html5/entities.json>.
 

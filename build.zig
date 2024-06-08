@@ -7,6 +7,13 @@ pub fn build(b: *std.Build) !void {
 
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+
+    _ = b.addModule("htmlentities", .{
+        .root_source_file = b.path("src/main.zig"),
+        .optimize = optimize,
+        .target = target,
+    });
+
     const lib = b.addStaticLibrary(.{
         .name = "htmlentities.zig",
         .root_source_file = .{ .path = "src/main.zig" },

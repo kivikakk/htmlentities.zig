@@ -6,6 +6,7 @@ The bundled [`entities.json`](/entities.json) is sourced from <https://www.w3.or
 
 Modelled on [Philip Jackson's `entities` crate](https://github.com/p-jackson/entities) for Rust.
 
+
 ## Overview
 
 The core datatypes are:
@@ -30,15 +31,23 @@ pub const ENTITIES: [_]Entity
 pub fn lookup(entity: []const u8) ?Entity
 ```
 
-## Usage
 
-build.zig:
+## Serving suggestion
 
-```zig
-    exe.addPackagePath("htmlentities", "vendor/htmlentities.zig/src/main.zig");
+Add it to your `build.zig.zon`:
+
+```
+zig fetch --save https://github.com/kivikakk/htmlentities.zig/archive/bd5d569a245c7c8e83812eadcb5761b7ba76ef04.tar.gz
 ```
 
-main.zig:
+In your `build.zig`:
+
+```zig
+const htmlentities_dep = b.dependency("htmlentities.zig", .{ .target = target, .optimize = optimize });
+exe.root_module.addImport("htmlentities", htmlentities_dep.module("htmlentities"));
+```
+
+In your `main.zig`:
 
 ```zig
 const std = @import("std");
@@ -55,6 +64,7 @@ Output:
 ```
 eacute: Entity{ .entity = &eacute;, .codepoints = Codepoints{ .Single = 233 }, .characters = é }
 ```
+
 
 ## Help wanted
 

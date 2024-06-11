@@ -4,7 +4,7 @@ const assert = std.debug.assert;
 pub fn build(b: *std.Build) !void {
     const genent = b.addExecutable(.{
         .name = "generate_entities",
-        .root_source_file = b.path("tools/generate_entities.zig"),
+        .root_source_file = b.path("src/generate_entities.zig"),
         .target = b.host,
     });
     const genent_step = b.addRunArtifact(genent);

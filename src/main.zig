@@ -4,16 +4,16 @@ const entities = @import("entities");
 const Entity = entities.Entity;
 const Codepoints = entities.Codepoints;
 
-fn order(_: void, lhs: entities.Entity, rhs: Entity) std.math.Order {
+fn order(lhs: entities.Entity, rhs: Entity) std.math.Order {
     return std.mem.order(u8, lhs.entity, rhs.entity);
 }
 
 pub fn lookup(entity: []const u8) ?Entity {
-    const maybe_index = std.sort.binarySearch(Entity, Entity{
+    const maybe_index = std.sort.binarySearch(Entity, entities.ENTITIES[0..], Entity{
         .entity = entity,
         .codepoints = .{ .Single = 0 },
         .characters = "",
-    }, entities.ENTITIES[0..], {}, order);
+    }, order);
 
     if (maybe_index) |index| {
         return entities.ENTITIES[index];

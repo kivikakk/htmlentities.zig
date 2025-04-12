@@ -16,7 +16,7 @@ jobs:
           submodules: recursive
       - uses: goto-bus-stop/setup-zig@v1
         with:
-          version: 0.13.0
+          version: 0.14.0
       - run: zig build
       - run: zig build test
   lint:
@@ -27,5 +27,5 @@ jobs:
           submodules: recursive
       - uses: goto-bus-stop/setup-zig@v1
         with:
-          version: 0.13.0
+          version: 0.14.0
       - run: zig fmt --check build.zig src/*.zig

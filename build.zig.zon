@@ -1,9 +1,9 @@
 .{
-    .name = "htmlentities.zig",
+    .name = .htmlentities_zig,
     .version = "0.1.0",
-    .minimum_zig_version = "0.12.0",
+    .minimum_zig_version = "0.14.0",
     .dependencies = .{},
-
+    .fingerprint = 0x45088a7324835fcd,
     .paths = .{
         "entities.json",
         "build.zig",

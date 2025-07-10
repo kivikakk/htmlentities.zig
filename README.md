@@ -1,6 +1,4 @@
-# [htmlentities.zig](https://github.com/kivikakk/htmlentities.zig)
-
-![Build status](https://github.com/kivikakk/htmlentities.zig/workflows/build/badge.svg)
+# htmlentities.zig
 
 The bundled [`entities.json`](/entities.json) is sourced from <https://www.w3.org/TR/html5/entities.json>.
 
@@ -37,7 +35,7 @@ pub fn lookup(entity: []const u8) ?Entity
 Add it to your `build.zig.zon`:
 
 ```
-zig fetch --save https://github.com/kivikakk/htmlentities.zig/archive/bd5d569a245c7c8e83812eadcb5761b7ba76ef04.tar.gz
+zig fetch --save https://github.com/kivikakk/htmlentities.zig/archive/2436557c2a6c2c5e2e6f38fa68a70bcc97374d15.tar.gz
 ```
 
 In your `build.zig`:

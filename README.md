@@ -35,7 +35,7 @@ pub fn lookup(entity: []const u8) ?Entity
 Add it to your `build.zig.zon`:
 
 ```
-zig fetch --save https://github.com/kivikakk/htmlentities.zig/archive/2436557c2a6c2c5e2e6f38fa68a70bcc97374d15.tar.gz
+zig fetch --save git+https://nossa.ee/~talya/htmlentities.zig
 ```
 
 In your `build.zig`:
@@ -71,11 +71,9 @@ tokeniser uses ~80GB of RAM and millions of backtracks to handle the whole
 `entities.json` at comptime, so it's not gonna happen yet.  Maybe once we get a
 comptime allocator we can use the regular parser.
 
-As it is, we do codegen.  Ideally we'd piece together an AST and render that
-instead of just writing Zig directly -- I did try it with a 'template' input
-string (see some broken wip at
-[`63b9393`](https://github.com/kivikakk/htmlentities.zig/commit/63b9393)), but
-it's hard to do since `std.zig.render` expects all tokens, including string
-literal, to be available in the originally parsed source.  At the moment we
-parse our generated source and format it so we can at least validate it
-syntactically in the build step.
+As it is, we do codegen.  Ideally we'd piece together an AST and render
+that instead of just writing Zig directly -- I did try it with a 'template'
+input string (see some broken wip at `63b9393`), but it's hard to do since
+`std.zig.render` expects all tokens, including string literal, to be available
+in the originally parsed source.  At the moment we parse our generated source
+and format it so we can at least validate it syntactically in the build step.

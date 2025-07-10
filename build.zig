@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 const assert = std.debug.assert;
 
 pub fn build(b: *std.Build) !void {
@@ -9,10 +8,7 @@ pub fn build(b: *std.Build) !void {
     const genent = b.addExecutable(.{
         .name = "generate_entities",
         .root_source_file = b.path("src/generate_entities.zig"),
-        .target = .{
-            .result = builtin.target,
-            .query = .{},
-        },
+        .target = b.graph.host,
     });
     const genent_step = b.addRunArtifact(genent);
     const genent_out = genent_step.addOutputFileArg("entities.zig");

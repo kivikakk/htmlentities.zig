@@ -8,7 +8,7 @@ pub fn build(b: *std.Build) !void {
     const genent = b.addExecutable(.{
         .name = "generate_entities",
         .root_source_file = b.path("src/generate_entities.zig"),
-        .target = target,
+        .target = b.graph.host,
     });
     const genent_step = b.addRunArtifact(genent);
     const genent_out = genent_step.addOutputFileArg("entities.zig");

@@ -7,31 +7,40 @@ pub fn build(b: *std.Build) !void {
 
     const genent = b.addExecutable(.{
         .name = "generate_entities",
-        .root_source_file = b.path("src/generate_entities.zig"),
-        .target = b.graph.host,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/generate_entities.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
     const genent_step = b.addRunArtifact(genent);
     const genent_out = genent_step.addOutputFileArg("entities.zig");
 
     const mod = b.addModule("htmlentities", .{
         .root_source_file = b.path("src/main.zig"),
-        .optimize = optimize,
         .target = target,
+        .optimize = optimize,
     });
     mod.addAnonymousImport("entities", .{ .root_source_file = genent_out });
 
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addLibrary(.{
         .name = "htmlentities.zig",
-        .root_source_file = b.path("src/main.zig"),
-        .optimize = optimize,
-        .target = target,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/main.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
     lib.root_module.addAnonymousImport("entities", .{ .root_source_file = genent_out });
     b.installArtifact(lib);
 
     var main_tests = b.addTest(.{
-        .root_source_file = b.path("src/main.zig"),
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/main.zig"),
+
+            .target = target,
+            .optimize = optimize,
+        }),
     });
     main_tests.root_module.addAnonymousImport("entities", .{ .root_source_file = genent_out });
 
